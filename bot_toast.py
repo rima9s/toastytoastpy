@@ -1,4 +1,5 @@
-# Python 3.6
+#!python36
+
 import discord
 
 from bot_token import imtoken
