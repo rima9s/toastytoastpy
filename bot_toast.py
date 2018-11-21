@@ -5,13 +5,14 @@ import aiohttp
 import json
 
 import discord
+from discord.ext.commands import Bot
 from bot_token import imtoken
 
 TOKEN = imtoken
 
 #client = discord.Client()
-
 BOT_PREFIX = ("?", "!")
+client = Bot(command_prefix=BOT_PREFIX)
 
 
 @client.event
@@ -25,19 +26,19 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
 @client.command(name='8ball',
-                description="Answers a yes/no question.",
+                description="Answers yes or no question with variety of resp.",
                 brief="Answers from the beyond.",
                 aliases=['eight_ball', 'eightball', '8-ball'],
                 pass_context=True)
 async def eight_ball(context):
     possible_responses = [
-        'That is a resounding no',
+        'That. Is a no.',
         'Mmm. Really not looking likely mate',
         'Wee too hard to say',
         'It is a possibility',
         'Most certainly so',
     ]
-    await client.say(random.choice(possible_responses) + ", " context.message.author.mention)
+    await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
 @client.event
 async def on_ready():
@@ -46,4 +47,13 @@ async def on_ready():
     print(client.user.id)
     print('-------')
 
+async def list_servers():
+    await client.wait_until_ready()
+    while not client.is_closed:
+        print("Current servers:")
+        for server in client.servers:
+            print(server.name)
+        await asyncio.sleep(600)
+
+client.loop.create_task(list_servers())
 client.run(TOKEN)
