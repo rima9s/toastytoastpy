@@ -4,7 +4,7 @@ import asyncio
 import aiohttp
 import json
 
-import discord
+#import discord
 from discord.ext.commands import Bot
 from bot_token import imtoken
 
@@ -26,6 +26,8 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
     elif message.content.startswith('!bot'):
         await client.send_message(message.channel, "You summoned?")
+
+    await client.process_commands(message)
 
 @client.command(name='8ball',
                 description="Answers a yes/no question.",
