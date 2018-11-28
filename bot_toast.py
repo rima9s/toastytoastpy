@@ -3,8 +3,9 @@ import random
 import asyncio
 import aiohttp
 import json
+import requests
 
-#import discord
+from discord import Game
 from discord.ext.commands import Bot
 from bot_token import imtoken
 
@@ -27,6 +28,7 @@ async def on_message(message):
     elif message.content.startswith('!bot'):
         await client.send_message(message.channel, "You summoned?")
 
+    #make sure to include with on_message use
     await client.process_commands(message)
 
 @client.command(name='8ball',
@@ -51,10 +53,16 @@ async def square(num):
 
 @client.event
 async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
+    await client.change_presence(game=Game(name="with humans"))
+    print("Logged in as: " + client.user.name + ", ID: " + client.user.id)
     print('-------')
+
+@client.command()
+async def bitcoin():
+    url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
+    response = requests.get(url)
+    value = response.json()['bpi']['USD']['rate']
+    await client.say("Bitcoin price: $" + value)
 
 async def list_servers():
     await client.wait_until_ready()
