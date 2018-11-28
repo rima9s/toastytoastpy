@@ -24,9 +24,11 @@ async def on_message(message):
     if message.content.startswith('!hello'):
         msg = 'hello {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
+    elif message.content.startswith('!bot'):
+        await client.send_message(message.channel, "You summoned?")
 
 @client.command(name='8ball',
-                description="Answers yes or no question with variety of resp.",
+                description="Answers a yes/no question.",
                 brief="Answers from the beyond.",
                 aliases=['eight_ball', 'eightball', '8-ball'],
                 pass_context=True)
@@ -39,6 +41,11 @@ async def eight_ball(context):
         'Most certainly so',
     ]
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
+
+@client.command()
+async def square(num):
+    squared_value = int(num) * int(num)
+    await client.say(str(num) + " squared is " + str(squared_value))
 
 @client.event
 async def on_ready():
